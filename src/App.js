@@ -11,7 +11,8 @@ function App(){
   // function that counts number of words in text
 
   function wordCount(string){
-    return string.split(' ').length
+    const wordArray = string.split(' ')
+    return wordArray.filter(word => word !== "").length
   }
 
   return (
@@ -19,8 +20,8 @@ function App(){
       <h1>How fast can you type?</h1>
       <textarea onChange={handleChange} value={text}/>
       <h4>Time Remaining: ???</h4>
-      <button>Start</button>
-      <h1>Word count: {wordCount(text)}</h1>
+      <button onClick={() => wordCount(text)}>Start</button>
+      <h1>Word count: ???</h1>
     </div>
   )
 }
