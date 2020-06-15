@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
 
 function App(){
+  const STARTING_TIME = 5
   const [ text, setText ] = useState("")
-  const [ timeRemaining, setTimeRemaining ] = useState(4)
+  const [ timeRemaining, setTimeRemaining ] = useState(STARTING_TIME)
   const [ shouldStart, setShouldStart ] = useState(false)
+  const [ wordCount, setWordCount ] = useState(0)
 
   // handleChange(event) takes in an event
   // and changes the state of text
@@ -14,9 +16,22 @@ function App(){
 
   // wordCount(string) takes in a string 
   // and counts number of words in the string
-  function wordCount(string){
+  function countWords(string){
     const wordArray = string.trim().split(' ')
     return wordArray.filter(word => word !== "").length
+  }
+
+  // startGame resets the game
+  function startGame() {
+    setTimeRemaining(STARTING_TIME)
+    setShouldStart(true)
+    setText("")
+  }
+
+  // endGame produces word count and stops game
+  function endGame() {
+    setShouldStart(false)
+    setWordCount(countWords(text))
   }
 
   // useEffect causes the timer to decrement
@@ -26,16 +41,18 @@ function App(){
       setTimeout( () => {
         setTimeRemaining(time => time - 1)
       }, 1000)
+    } else if(timeRemaining === 0){
+      endGame()
     }
   }, [timeRemaining, shouldStart])
 
   return (
     <div>
       <h1>How fast can you type?</h1>
-      <textarea onChange={handleChange} value={text}/>
+      <textarea onChange={handleChange} value={text} disabled={!shouldStart}/>
       <h4>Time Remaining: {timeRemaining}</h4>
-      <button onClick={() => setShouldStart(true)}>Start</button>
-      <h1>Word count: ???</h1>
+      <button style={{cursor: "pointer"}} onClick={startGame} disabled={shouldStart}>Start</button>
+      <h1>Word count: {wordCount}</h1>
     </div>
   )
 }
