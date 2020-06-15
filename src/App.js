@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react"
 
 function App(){
   const [ text, setText ] = useState("")
-  const [ timeRemaining, setTimeRemaining ] = useState(15)
+  const [ timeRemaining, setTimeRemaining ] = useState(4)
+  const [ shouldStart, setShouldStart ] = useState(false)
 
   // handleChange(event) takes in an event
   // and changes the state of text
@@ -21,19 +22,19 @@ function App(){
   // useEffect causes the timer to decrement
   // by 1 second till it reaches 0
   useEffect( () => {
-    if(timeRemaining > 0){
+    if(timeRemaining > 0 && shouldStart){
       setTimeout( () => {
         setTimeRemaining(time => time - 1)
       }, 1000)
     }
-  }, [timeRemaining])
+  }, [timeRemaining, shouldStart])
 
   return (
     <div>
       <h1>How fast can you type?</h1>
       <textarea onChange={handleChange} value={text}/>
       <h4>Time Remaining: {timeRemaining}</h4>
-      <button onClick={() => wordCount(text)}>Start</button>
+      <button onClick={() => setShouldStart(true)}>Start</button>
       <h1>Word count: ???</h1>
     </div>
   )
